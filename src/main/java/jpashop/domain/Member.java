@@ -26,6 +26,10 @@ public class Member {
     private Locker locker;
 
 
+    @OneToMany(mappedBy = "product")
+    private List<MemberProduct> memberProducts = new ArrayList<>();
+
+
     public Member() {
     }
 
