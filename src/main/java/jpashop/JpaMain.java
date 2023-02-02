@@ -1,7 +1,9 @@
 package jpashop;
 
+import jpashop.domain.Child;
 import jpashop.domain.Order;
 import jpashop.domain.OrderItem;
+import jpashop.domain.Parent;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -18,13 +20,23 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Order order = new Order();
-            em.persist(order);
 
-            OrderItem orderItem = new OrderItem();
-            orderItem.setOrder(order);
+            Child child1 = new Child();
+            Child child2 = new Child();
 
-            em.persist(orderItem);
+            Parent parent = new Parent();
+            parent.addChild(child1);
+            parent.addChild(child2);
+
+            em.persist(parent);
+
+            em.flush();
+            em.clear();
+
+            Parent findParent = em.find(Parent.class, parent.getId());
+
+            findParent.getChildList().remove(0);
+
 
             tx.commit();
         } catch (Exception e) {
